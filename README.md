@@ -24,6 +24,8 @@ Once the user has selected which type of employee they'd like to add, they are a
 
 When the user is finished adding employees to the list, they can select the "All done" option to generate their employee profile. The application will then write the data the user has entered into a HTML file named "team.html", which can be found in the "output" folder of the application. This file will be fully formatted, and will display all of the information entered by the user.
 
+You can view a tutorial video on how to use the application [here](https://drive.google.com/file/d/1U0DLK9Iz860m0H1Ga2tqvDdYkE-W0E4Y/view?usp=sharing)!
+
 ## Screenshots
 
 Opening prompt of the Employee Profile Generator
