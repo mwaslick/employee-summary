@@ -21,7 +21,7 @@ function generateEmployee() {
         type: "list",
         name: "choice",
         message: "Which type of employee would you like to add?",
-        choices: ["Manager", "Intern", "Engineer", "I'm done"]
+        choices: ["Manager", "Intern", "Engineer", "All done"]
     })
     .then(function ({ choice }) {
         switch (choice) {
@@ -40,10 +40,10 @@ function generateEmployee() {
                 generateIntern();
                 break;
             
-            case "I'm done":
+            case "All done":
                 // If there are no employees in the array, the generator will tell them to add an employee before generating the profile
                 if (!employees.length) {
-                    console.log("You must add information for at least one employee in order to generate your team profile.")
+                    console.log("You must add information for at least one employee in order to generate your profile.")
                     generateEmployee()
                 } else {
                     // If there are employees, the generator uses the render function to convert it to HTML
