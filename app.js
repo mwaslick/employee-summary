@@ -1,3 +1,4 @@
+// Code that shows all required classes, as well as inquirer, path, and fs
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
@@ -5,17 +6,16 @@ const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
 
+// Creates a new array labeled employees which starts off blank
 const employees = []
 
+// Defines output directory, output path, and render function
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
-
 const render = require("./lib/htmlRenderer");
 
 
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
+// Function that uses inquirer to ask the user what kind of employee they want to add, and calls functions depending on their choices
 function generateEmployee() {
     inquirer.prompt({
         type: "list",
@@ -26,36 +26,40 @@ function generateEmployee() {
     .then(function ({ choice }) {
         switch (choice) {
             case "Manager":
+                // If they select Manager, generates a new manager
                 generateManager();
                 break;
 
             case "Engineer":
+                // If they select Engineer, it generates a new engineer
                 generateEngineer();
                 break;
 
             case "Intern":
+                // If they select Intern, it generates a new intern
                 generateIntern();
                 break;
             
             case "I'm done":
-                if (employees === []) {
+                // If there are no employees in the array, the generator will tell them to add an employee before generating the profile
+                if (!employees.length) {
                     console.log("You must add information for at least one employee in order to generate your team profile.")
                     generateEmployee()
                 } else {
+                    // If there are employees, the generator uses the render function to convert it to HTML
                     const rendered = render(employees);
+                    // Then, it writes a team.html file using the outputPath variable
                     fs.writeFile(outputPath, rendered, function(err) {
                     if (err) return console.log(err)
-                    });
-                }
-                
-
-            default:
-                console.log("Thank you for using the Employee Generator")
-                break;
+                    })
+                    console.log("Your team profile has been written to team.html in the output folder. Thank you for using the Employee Profile Generator!")
+                        };
+                    break;
         }
     })
 }
 
+// Function that prompts the user to input the information with inquirer, and then creates a new Manager object with their answers
 function generateManager() {
     inquirer.prompt([
     {
@@ -82,14 +86,16 @@ function generateManager() {
         message: "What is the employee's office number?"
     }
 ])
+
 .then (function(answers) {
     const newManager = new Manager(answers.name, answers.id, answers.email, answers.officenumber);
     employees.push(newManager);
-    console.log(employees)
+    console.log(`${answers.name} the Manager has been added to your list of employees.`)
     generateEmployee()
 }
 )}
 
+// Function that prompts the user to input the information with inquirer, and then creates a new Engineer object with their answers
 function generateEngineer() {
     inquirer.prompt([
     {
@@ -119,11 +125,12 @@ function generateEngineer() {
 .then (function(answers) {
     const newEngineer = new Engineer(answers.name, answers.id, answers.email, answers.github);
     employees.push(newEngineer);
-    console.log(employees)
+    console.log(`${answers.name} the Engineer has been added to your list of employees.`)
     generateEmployee()
 }
 )}
 
+// Function that prompts the user to input the information with inquirer, and then creates a new Intern object with their answers
 function generateIntern() {
     inquirer.prompt([
     {
@@ -153,30 +160,11 @@ function generateIntern() {
 .then (function(answers) {
     const newIntern = new Intern(answers.name, answers.id, answers.email, answers.school);
     employees.push(newIntern);
-    console.log(employees)
+    console.log(`${answers.name} the Intern has been added to your list of employees.`);
     generateEmployee()
 }
 )}
 
-
+// calls the generateEmployee function as soon as the user runs the program
+console.log("Welcome to the Employee Profile Generator.")
 generateEmployee()
-
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
-
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
